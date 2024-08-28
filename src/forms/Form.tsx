@@ -38,9 +38,7 @@ export function Form<T extends FormData>({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const subject = useMemo(() => new BehaviorSubject<T>(form.data), []);
   const onChange = useMemo(() => {
-    console.log('new onchange');
     return (data: T) => {
-      console.log('onchange called', data);
       subject.next(data);
     };
   }, [subject]);

@@ -89,9 +89,6 @@ export class LiveViewModel {
   }
 
   pushEvent(eventType: string, payload: any) {
-    console.log('pushEvent: event', eventType);
-    console.log('pushEvent: payload', payload);
-    console.log('pushEvent: channel', this.channel);
     this.channel.pushEvent(eventType, payload);
   }
 

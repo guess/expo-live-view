@@ -62,7 +62,7 @@ export class LiveSocket {
       const message = [error.reason, error.name, error.message].find(
         (value) => value
       );
-      console.log(message);
+      console.debug(message);
       return message;
     } else if (typeof error === 'string') {
       return error;
