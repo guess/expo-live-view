@@ -1,6 +1,5 @@
-import { createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, type ReactNode } from 'react';
 import type { LiveViewModel } from './LiveViewModel';
-import { View } from 'react-native';
 
 export const LiveViewContext = createContext<LiveViewModel | null>(null);
 
@@ -14,9 +13,14 @@ export function LiveView<T extends LiveViewModel>({
   viewModel,
   children,
 }: LiveViewProps<T>) {
+  useEffect(() => {
+    viewModel.join();
+    return () => viewModel.leave();
+  }, [viewModel]);
+
   return (
     <LiveViewContext.Provider value={viewModel}>
-      <View>{children}</View>
+      {children}
     </LiveViewContext.Provider>
   );
 }

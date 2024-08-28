@@ -1,8 +1,9 @@
-import { isNotNull } from 'expo-live-view/utils/rxjs';
-import { snakeToCamel } from 'expo-live-view/utils/snakeToCamel';
+import { isNotNull } from '../utils/rxjs';
+import { snakeToCamel } from '../utils/snakeToCamel';
 
 import type { AnnotationsMap } from 'mobx';
 import { makeObservable, observable, runInAction } from 'mobx';
+import { set } from 'lodash';
 import { BehaviorSubject, filter, Subscription, switchMap } from 'rxjs';
 import LiveChannel from './LiveChannel';
 import type { LiveStateChange, LiveStatePatch } from './LiveChannel';
@@ -88,7 +89,35 @@ export class LiveViewModel {
   }
 
   pushEvent(eventType: string, payload: any) {
+    console.log('pushEvent: event', eventType);
+    console.log('pushEvent: payload', payload);
+    console.log('pushEvent: channel', this.channel);
     this.channel.pushEvent(eventType, payload);
+  }
+
+  setValueFromPath(path: string[], value: any): any {
+    const topLevelProp = path[0];
+    const restOfPath = path.slice(1);
+    let finalValue;
+
+    if (!topLevelProp) return null;
+
+    runInAction(() => {
+      if (restOfPath.length === 0) {
+        // If it's a top-level property, just set it directly
+        (this as any)[topLevelProp] = value;
+        finalValue = value;
+      } else {
+        // For nested properties, create a new object
+        const currentValue = (this as any)[topLevelProp];
+        const newValue = { ...currentValue };
+        set(newValue, restOfPath, value);
+        (this as any)[topLevelProp] = newValue;
+        finalValue = newValue;
+      }
+    });
+
+    return finalValue;
   }
 
   subscribeToChannelEvent(eventType: string, callback: (resp: any) => void) {

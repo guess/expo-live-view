@@ -1,129 +1,75 @@
-import {
-  action,
-  computed,
-  makeObservable,
-  observable,
-  runInAction,
-} from 'mobx';
-import type { FormErrors, FormSpec, FormData } from './Form';
+import type { FormSpec, FormData, FormErrors } from './Form';
 import type { FormFieldSpec } from './FormField';
-import { debounceTime, distinctUntilChanged, map, Subject } from 'rxjs';
+import type { LiveViewModel } from '../phoenix/LiveViewModel';
+import { get } from 'lodash';
 
 export class FormStore<T extends FormData> {
-  @observable form: FormSpec<T>;
-  @observable isSubmitting: boolean = false;
+  form: FormSpec<T>;
+  viewModel: LiveViewModel;
+  formKey: string;
+  name: string;
+  onChange: (data: T) => void;
   change: string;
   submit: string;
-  changeSubject: Subject<{ path: string[]; value: any }> = new Subject();
-  pushEvent: (event: string, data: T) => void;
 
   constructor(
-    initialForm: FormSpec<T>,
+    form: FormSpec<T>,
+    viewModel: LiveViewModel,
+    formKey: string,
+    name: string,
+    onChange: (data: T) => void,
     change: string,
-    submit: string,
-    pushEvent: (event: string, data: T) => void
+    submit: string
   ) {
-    this.form = initialForm;
+    this.form = form;
+    this.viewModel = viewModel;
+    this.formKey = formKey;
+    this.name = name;
+    this.onChange = onChange;
     this.change = change;
     this.submit = submit;
-    this.pushEvent = pushEvent;
-    makeObservable(this);
-
-    this.changeSubject
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(
-          (prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)
-        ),
-        map(({ path, value }) => ({ path, value }))
-      )
-      .subscribe(({ path, value }) => {
-        console.log('Sending changes to server:', { path, value });
-        // this.pushEvent(this.change, { path, value });
-      });
-  }
-
-  @computed get isValid(): boolean {
-    return Object.keys(this.form.errors).length === 0;
   }
 
   getField(path: string[]): FormFieldSpec {
     return {
-      getValue: () => this.getValue(this.form.data, path),
-      setValue: (value: any) => this.setValue(this.form.data, path, value),
-      getErrors: () => this.getFormErrors(this.form.errors, path),
-      validate: () => this.validateField(path),
+      getValue: () => this.getValue(path),
+      setValue: (value: any) => this.setValue(path, value),
+      getErrors: () => this.getErrors(path),
     };
   }
 
-  @action
-  private setValue(obj: FormData, path: string[], value: any) {
-    const lastKey = path[path.length - 1];
-    const parentPath = path.slice(0, -1);
-    const parent = parentPath.reduce((acc, key) => acc[key], obj);
-    runInAction(() => {
-      if (parent && lastKey) {
-        parent[lastKey] = value;
-        this.changeSubject.next({ path, value });
-        this.validateField(path);
-      }
-    });
+  setValue(path: string[], value: any) {
+    const fullPath = [this.formKey, 'data', ...path];
+    const newValue = this.viewModel.setValueFromPath(fullPath, value);
+    newValue && this.onChange(newValue.data);
   }
 
-  private getValue(obj: FormData, path: string[]): any {
-    return path.reduce(
-      (acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined),
-      obj
-    );
+  getValue(path: string[]): any {
+    return get(this.form.data, path);
   }
 
-  @action
-  private removeValue(obj: FormData, path: string[]) {
-    const lastKey = path[path.length - 1];
-    const parentPath = path.slice(0, -1);
-    const parent = parentPath.reduce((acc, key) => acc[key], obj);
-    if (parent && lastKey && parent.hasOwnProperty(lastKey)) {
-      delete parent[lastKey];
-    }
+  getErrors(path: string[]): string[] {
+    return get(this.form.errors, path, []);
   }
 
-  private getFormErrors(errors: FormErrors, path: string[]): string[] {
-    const nestedErrors = this.getValue(errors, path);
-    return Array.isArray(nestedErrors) ? nestedErrors : [];
+  get errors(): FormErrors {
+    return this.form.errors || {};
   }
 
-  @action
-  private validateField(path: string[]) {
-    const value = this.getValue(this.form.data, path);
-    const rule = this.getValue(this.form.validationRules, path);
-    const error = rule ? rule(value) : null;
-
-    runInAction(() => {
-      if (error) {
-        this.setValue(this.form.errors, path, [error]);
-      } else {
-        this.removeValue(this.form.errors, path);
-      }
-    });
+  get isValid(): boolean {
+    return Object.keys(this.errors).length === 0;
   }
 
-  @action
-  async submitForm() {
-    if (this.isSubmitting || !this.isValid) return;
+  validateForm(data: T) {
+    this.pushEvent(this.change, data);
+  }
 
-    runInAction(() => {
-      this.isSubmitting = true;
-    });
+  submitForm() {
+    if (!this.isValid) return;
+    this.pushEvent(this.submit, this.form.data);
+  }
 
-    try {
-      this.pushEvent(this.submit, this.form.data);
-      // You might want to clear the form or show a success message here
-    } catch (error) {
-      console.error('Form submission failed:', error);
-    } finally {
-      runInAction(() => {
-        this.isSubmitting = false;
-      });
-    }
+  private pushEvent(event: string, data: T) {
+    this.viewModel.pushEvent(event, { [this.name]: data });
   }
 }

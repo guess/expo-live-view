@@ -14,7 +14,6 @@ export function SwitchFormField({ field, label }: SwitchFormFieldProps) {
           value={value}
           onValueChange={(newValue) => {
             onChange(newValue);
-            field.validate();
           }}
         />
       )}

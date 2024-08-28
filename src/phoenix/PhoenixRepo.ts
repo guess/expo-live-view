@@ -9,7 +9,7 @@ import {
   zip,
 } from 'rxjs';
 import LiveChannel from './LiveChannel';
-import { isNotNull } from 'expo-live-view/utils/rxjs';
+import { isNotNull } from '../utils/rxjs';
 import { LiveSocket } from './LiveSocket';
 
 export class PhoenixRepo {
@@ -28,14 +28,17 @@ export class PhoenixRepo {
   }
 
   connect() {
+    console.debug('connecting to socket');
     this._subscription = buildSocket(this.url, this._params$).subscribe(
       (socket) => {
+        console.debug('connected to socket');
         this._socket$.next(socket);
       }
     );
   }
 
   disconnect() {
+    console.debug('disconnecting from socket');
     this.socket?.disconnect();
     this._subscription?.unsubscribe();
   }
@@ -61,11 +64,10 @@ const buildSocket = (
   params$: Observable<object | null>
 ): Observable<LiveSocket> => {
   return params$.pipe(
-    filter(isNotNull),
-    map((token) => {
+    map((params) => {
       const socket = new LiveSocket(url, {
-        params: { token },
-        logger: (kind: string, msg: string, data: any) => {
+        params: params || {},
+        debugger: (kind: string, msg: string, data: any) => {
           console.debug(`${kind}: ${msg}`, data);
         },
       });

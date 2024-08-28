@@ -6,7 +6,6 @@ export type FormFieldSpec = {
   getValue: () => any;
   setValue: (value: any) => void;
   getErrors: () => string[];
-  validate: () => void;
 };
 
 type FormFieldProps = {

@@ -5,16 +5,12 @@ type TextFormFieldProps = {
   field: FormFieldSpec;
   label?: string;
   placeholder?: string;
-  keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
-  secureTextEntry?: boolean;
 };
 
 export function TextFormField({
   field,
   label,
   placeholder,
-  keyboardType = 'default',
-  secureTextEntry = false,
 }: TextFormFieldProps) {
   return (
     <FormField field={field} label={label}>
@@ -23,10 +19,7 @@ export function TextFormField({
           style={styles.input}
           value={value}
           onChangeText={onChange}
-          onBlur={() => field.validate()}
           placeholder={placeholder}
-          keyboardType={keyboardType}
-          secureTextEntry={secureTextEntry}
         />
       )}
     </FormField>

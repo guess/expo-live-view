@@ -1,10 +1,5 @@
 import { useContext } from 'react';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { FormContext } from './Form';
 import { observer } from 'mobx-react-lite';
 
@@ -21,17 +16,12 @@ export const SubmitButton = observer(
       <TouchableOpacity
         style={[
           styles.submitButton,
-          (!formStore.isValid || formStore.isSubmitting) &&
-            styles.submitButtonDisabled,
+          !formStore.isValid && styles.submitButtonDisabled,
         ]}
         onPress={() => formStore.submitForm()}
-        disabled={!formStore.isValid || formStore.isSubmitting}
+        disabled={!formStore.isValid}
       >
-        {formStore.isSubmitting ? (
-          <ActivityIndicator color="#ffffff" />
-        ) : (
-          <Text style={styles.submitButtonText}>{title}</Text>
-        )}
+        <Text style={styles.submitButtonText}>{title}</Text>
       </TouchableOpacity>
     );
   }
