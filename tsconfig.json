@@ -3,7 +3,6 @@
     "rootDir": ".",
     "paths": {
       "expo-live-view": ["./src/index"]
-      // "expo-live-view/*": ["./src/*"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
