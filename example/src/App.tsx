@@ -7,7 +7,7 @@ import {
   TextFormField,
 } from 'expo-live-view';
 import { useMemo } from 'react';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { LiveViewModel } from 'expo-live-view';
 import { observer } from 'mobx-react-lite';
 import { action, observable } from 'mobx';
@@ -75,6 +75,13 @@ const ViewModelComponent = observer(() => {
   return (
     <LiveView<UserFormViewModel> viewModel={vm}>
       <SafeAreaView style={styles.container}>
+        <View style={styles.connected}>
+          {connected ? (
+            <Text>Connected to the socket</Text>
+          ) : (
+            <Text>Connecting...</Text>
+          )}
+        </View>
         <Form<UserForm> for={vm.form} change="validate" submit="save" as="user">
           {(form) => (
             <>
@@ -83,8 +90,6 @@ const ViewModelComponent = observer(() => {
                 label="Name"
                 placeholder="Enter your name"
               />
-              <Text>Connected: {connected ? 'true' : 'false'}</Text>
-              <Text>Value is: {vm.form.data.name}</Text>
               <SubmitButton title="Create Account" />
             </>
           )}
@@ -100,5 +105,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     margin: 16,
+  },
+  connected: {
+    paddingVertical: 16,
   },
 });
