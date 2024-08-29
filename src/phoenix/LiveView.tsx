@@ -1,18 +1,26 @@
-import { createContext, useContext, useEffect, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  type ReactNode,
+} from 'react';
 import type { LiveViewModel } from './LiveViewModel';
+import { usePhoenixSocket } from './PhoenixSocketProivder';
+import type { PhoenixRepo } from './PhoenixRepo';
 
 export const LiveViewContext = createContext<LiveViewModel | null>(null);
 
 // LiveView component
-type LiveViewProps<T extends LiveViewModel> = {
-  viewModel: T;
+type LiveViewProps = {
+  factory: (phoenix: PhoenixRepo) => LiveViewModel;
   children: ReactNode;
 };
 
-export function LiveView<T extends LiveViewModel>({
-  viewModel,
-  children,
-}: LiveViewProps<T>) {
+export function LiveView({ factory, children }: LiveViewProps) {
+  const phoenix = usePhoenixSocket();
+  const viewModel = useMemo(() => factory(phoenix), [phoenix, factory]);
+
   useEffect(() => {
     viewModel.join();
     return () => viewModel.leave();
@@ -25,10 +33,10 @@ export function LiveView<T extends LiveViewModel>({
   );
 }
 
-export const useLiveView = () => {
+export const useLiveView = <T extends LiveViewModel>(): T => {
   const context = useContext(LiveViewContext);
   if (context === null) {
     throw new Error('useLiveView must be used within a LiveView');
   }
-  return context;
+  return context as T;
 };
