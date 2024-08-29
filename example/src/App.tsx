@@ -42,7 +42,6 @@ class UserFormViewModel extends LiveViewModel {
   }
 
   constructor(phoenix: PhoenixRepo, topic: string) {
-    console.log('creating a new view model');
     super(phoenix, topic);
 
     this.makeObservable(this, {
@@ -65,8 +64,6 @@ export default function App() {
 }
 
 const ViewModelComponent = observer(() => {
-  console.log('ViewModelComponent rendering');
-
   const phoenix = usePhoenixSocket();
   const vm = useMemo(
     () => new UserFormViewModel(phoenix, '/users/new'),
