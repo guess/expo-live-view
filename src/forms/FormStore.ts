@@ -35,6 +35,7 @@ export class FormStore<T extends FormData> {
       getValue: () => this.getValue(path),
       setValue: (value: any) => this.setValue(path, value),
       getErrors: () => this.getErrors(path),
+      getForm: () => this.getForm(path),
     };
   }
 
@@ -50,6 +51,24 @@ export class FormStore<T extends FormData> {
 
   getErrors(path: string[]): string[] {
     return get(this.form.errors, path, []);
+  }
+
+  private getFormErrors(path: string[]): FormErrors {
+    return get(this.form.errors, path, []) as FormErrors;
+  }
+
+  getForm(path: string[]): FormSpec<any> {
+    const value = this.getValue(path);
+    const errors = this.getFormErrors(path);
+
+    if (Array.isArray(errors)) {
+      throw new Error('Cannot get form from array value');
+    }
+
+    return {
+      data: value,
+      errors: errors as FormErrors,
+    };
   }
 
   get errors(): FormErrors {
