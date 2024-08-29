@@ -6,7 +6,7 @@ import {
   SubmitButton,
   TextFormField,
 } from 'expo-live-view';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
 import { LiveViewModel } from 'expo-live-view';
 import { observer } from 'mobx-react-lite';
@@ -24,7 +24,8 @@ class UserFormViewModel extends LiveViewModel {
     },
     errors: {},
   };
-  loading: boolean;
+  loading: boolean = false;
+  isConnected: boolean = false;
 
   setLoading(isLoading: boolean) {
     this.loading = isLoading;
@@ -36,16 +37,21 @@ class UserFormViewModel extends LiveViewModel {
     this.form = { ...this.form, data: data };
   }
 
+  setConnected(isConnected: boolean) {
+    this.isConnected = isConnected;
+  }
+
   constructor(phoenix: PhoenixRepo, topic: string) {
     console.log('creating a new view model');
     super(phoenix, topic);
-    this.loading = false;
 
     this.makeObservable(this, {
       form: observable.deep,
       loading: observable,
+      isConnected: observable,
       setLoading: action,
       setName: action,
+      setConnected: action,
     });
   }
 }
@@ -59,24 +65,19 @@ export default function App() {
 }
 
 const ViewModelComponent = observer(() => {
+  console.log('ViewModelComponent rendering');
+
   const phoenix = usePhoenixSocket();
   const vm = useMemo(
     () => new UserFormViewModel(phoenix, '/users/new'),
     [phoenix]
   );
 
-  useEffect(() => {
-    setTimeout(() => {
-      console.log('loading');
-      vm.setValueFromPath(['loading'], true);
-      vm.setValueFromPath(['form', 'data', 'name'], 'Hello');
-    }, 1000);
-  }, [vm]);
+  const connected = vm.isConnected;
 
   return (
     <LiveView<UserFormViewModel> viewModel={vm}>
       <SafeAreaView style={styles.container}>
-        <Text>Is loading: {vm.loading ? 'true' : 'false'}</Text>
         <Form<UserForm> for={vm.form} change="validate" submit="save" as="user">
           {(form) => (
             <>
@@ -85,7 +86,7 @@ const ViewModelComponent = observer(() => {
                 label="Name"
                 placeholder="Enter your name"
               />
-              {vm.loading && <Text>Loading...</Text>}
+              <Text>Connected: {connected ? 'true' : 'false'}</Text>
               <Text>Value is: {vm.form.data.name}</Text>
               <SubmitButton title="Create Account" />
             </>

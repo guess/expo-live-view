@@ -1,8 +1,11 @@
 import { isNotNull } from '../utils/rxjs';
 import { snakeToCamel } from '../utils/snakeToCamel';
-
 import type { AnnotationsMap } from 'mobx';
-import { makeObservable, observable, runInAction } from 'mobx';
+import {
+  makeObservable as mobxMakeObservable,
+  observable,
+  runInAction,
+} from 'mobx';
 import { set } from 'lodash';
 import { BehaviorSubject, filter, Subscription, switchMap } from 'rxjs';
 import LiveChannel from './LiveChannel';
@@ -45,7 +48,7 @@ export class LiveViewModel {
       });
     }
 
-    makeObservable(target, annotations);
+    mobxMakeObservable(target, annotations);
   }
 
   get channel() {
@@ -89,7 +92,7 @@ export class LiveViewModel {
   }
 
   pushEvent(eventType: string, payload: any) {
-    this.channel.pushEvent(eventType, payload);
+    this.channel?.pushEvent(eventType, payload);
   }
 
   setValueFromPath(path: string[], value: any): any {
