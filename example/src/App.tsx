@@ -15,13 +15,15 @@ import type { PhoenixRepo } from '../../src/phoenix/PhoenixRepo';
 
 type UserForm = {
   name: string;
+  address: {
+    street: string;
+    city: string;
+  };
 };
 
 class UserFormViewModel extends LiveViewModel {
   form: FormSpec<UserForm> = {
-    data: {
-      name: 'Hi',
-    },
+    data: { name: '', address: { street: '', city: '' } },
     errors: {},
   };
   loading: boolean = false;
@@ -86,10 +88,22 @@ const ViewModelComponent = observer(() => {
           {(form) => (
             <>
               <TextFormField
-                field={form.getField(['name'])}
+                field={form.getField('name')}
                 label="Name"
                 placeholder="Enter your name"
               />
+              <View style={styles.nested}>
+                <TextFormField
+                  field={form.getField(['address', 'street'])}
+                  label="Street"
+                  placeholder="Enter your street"
+                />
+                <TextFormField
+                  field={form.getField(['address', 'city'])}
+                  label="City"
+                  placeholder="Enter your city"
+                />
+              </View>
               <SubmitButton title="Create Account" />
             </>
           )}
@@ -108,5 +122,12 @@ const styles = StyleSheet.create({
   },
   connected: {
     paddingVertical: 16,
+  },
+  nested: {
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    padding: 10,
   },
 });

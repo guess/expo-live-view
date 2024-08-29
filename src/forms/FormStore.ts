@@ -30,12 +30,13 @@ export class FormStore<T extends FormData> {
     this.submit = submit;
   }
 
-  getField(path: string[]): FormFieldSpec {
+  getField(pathOrName: string[] | string): FormFieldSpec {
+    const path = toPath(pathOrName);
+
     return {
       getValue: () => this.getValue(path),
       setValue: (value: any) => this.setValue(path, value),
       getErrors: () => this.getErrors(path),
-      getForm: () => this.getForm(path),
     };
   }
 
@@ -46,29 +47,16 @@ export class FormStore<T extends FormData> {
   }
 
   getValue(path: string[]): any {
-    return get(this.form.data, path);
+    return get(this.data, path);
   }
 
   getErrors(path: string[]): string[] {
-    return get(this.form.errors, path, []);
+    const fieldErrors = get(this.errors, path, []);
+    return Array.isArray(fieldErrors) ? fieldErrors : [];
   }
 
-  private getFormErrors(path: string[]): FormErrors {
-    return get(this.form.errors, path, []) as FormErrors;
-  }
-
-  getForm(path: string[]): FormSpec<any> {
-    const value = this.getValue(path);
-    const errors = this.getFormErrors(path);
-
-    if (Array.isArray(errors)) {
-      throw new Error('Cannot get form from array value');
-    }
-
-    return {
-      data: value,
-      errors: errors as FormErrors,
-    };
+  get data(): T {
+    return this.form.data;
   }
 
   get errors(): FormErrors {
@@ -85,10 +73,14 @@ export class FormStore<T extends FormData> {
 
   submitForm() {
     if (!this.isValid) return;
-    this.pushEvent(this.submit, this.form.data);
+    this.pushEvent(this.submit, this.data);
   }
 
   private pushEvent(event: string, data: T) {
     this.viewModel.pushEvent(event, { [this.name]: data });
   }
 }
+
+const toPath = (pathOrName: string[] | string): string[] => {
+  return typeof pathOrName === 'string' ? [pathOrName] : pathOrName;
+};

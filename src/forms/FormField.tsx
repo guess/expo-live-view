@@ -1,13 +1,11 @@
 import type { ReactNode } from 'react';
 import { observer } from 'mobx-react-lite';
 import { StyleSheet, Text, View } from 'react-native';
-import type { FormSpec } from './Form';
 
 export type FormFieldSpec = {
   getValue: () => any;
   setValue: (value: any) => void;
-  getErrors: () => string[] | undefined;
-  getForm: () => FormSpec<any>;
+  getErrors: () => string[];
 };
 
 type FormFieldProps = {
@@ -26,12 +24,11 @@ export const FormField = observer(
       <View style={styles.fieldContainer}>
         {label && <Text style={styles.label}>{label}</Text>}
         {children(field.getValue(), field.setValue, field.getErrors())}
-        {field.getErrors() &&
-          field.getErrors()?.map((error, index) => (
-            <Text key={index} style={styles.error}>
-              {error}
-            </Text>
-          ))}
+        {field.getErrors()?.map((error, index) => (
+          <Text key={index} style={styles.error}>
+            {error}
+          </Text>
+        ))}
       </View>
     );
   }
