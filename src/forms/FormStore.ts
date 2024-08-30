@@ -32,8 +32,10 @@ export class FormStore<T extends FormData> {
 
   getField(pathOrName: string[] | string): FormFieldSpec {
     const path = toPath(pathOrName);
+    const name = lastElement(path)!;
 
     return {
+      name,
       getValue: () => this.getValue(path),
       setValue: (value: any) => this.setValue(path, value),
       getErrors: () => this.getErrors(path),
@@ -84,3 +86,5 @@ export class FormStore<T extends FormData> {
 const toPath = (pathOrName: string[] | string): string[] => {
   return typeof pathOrName === 'string' ? [pathOrName] : pathOrName;
 };
+
+const lastElement = (path: string[]) => path[path.length - 1];

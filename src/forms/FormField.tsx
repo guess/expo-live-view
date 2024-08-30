@@ -1,12 +1,17 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { TextStyle, ViewStyle } from 'react-native';
+import { snakeToTitleCase } from '../utils/snakeToTitleCase';
 
 export type FormFieldSpec = {
+  name: string;
   getValue: () => any;
   setValue: (value: any) => void;
   getErrors: () => string[];
 };
+
+export const displayName = (field: FormFieldSpec) =>
+  snakeToTitleCase(field.name);
 
 export type FormFieldProps = {
   field: FormFieldSpec;
@@ -47,9 +52,11 @@ export const FormField = ({
       </FormFieldError>
     ));
 
+  const formLabel = label !== undefined ? label : displayName(field);
+
   return (
     <View style={[styles.fieldContainer, containerStyle]}>
-      {label && labelRenderer(label)}
+      {label && labelRenderer(formLabel)}
       {children(field.getValue(), field.setValue, field.getErrors())}
       {field.getErrors()?.map((error, index) => errorRenderer(error, index))}
     </View>
@@ -78,7 +85,9 @@ const FormFieldError = ({
 
 const styles = StyleSheet.create({
   fieldContainer: {
-    marginBottom: 15,
+    flex: 1,
+    flexDirection: 'column',
+    marginBottom: 16,
   },
   label: {
     fontSize: 16,
