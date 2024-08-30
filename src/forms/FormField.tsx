@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { observer } from 'mobx-react-lite';
 import { StyleSheet, Text, View } from 'react-native';
 import type { TextStyle, ViewStyle } from 'react-native';
 
@@ -9,7 +8,7 @@ export type FormFieldSpec = {
   getErrors: () => string[];
 };
 
-type FormFieldProps = {
+export type FormFieldProps = {
   field: FormFieldSpec;
   label?: string;
   children: (
@@ -24,40 +23,38 @@ type FormFieldProps = {
   errorStyle?: TextStyle;
 };
 
-export const FormField = observer(
-  ({
-    field,
-    label,
-    children,
-    renderLabel,
-    renderError,
-    containerStyle,
-    labelStyle,
-    errorStyle,
-  }: FormFieldProps) => {
-    const labelRenderer =
-      renderLabel ||
-      ((formLabel: string) => (
-        <FormFieldLabel style={labelStyle}>{formLabel}</FormFieldLabel>
-      ));
+export const FormField = ({
+  field,
+  label,
+  children,
+  renderLabel,
+  renderError,
+  containerStyle,
+  labelStyle,
+  errorStyle,
+}: FormFieldProps) => {
+  const labelRenderer =
+    renderLabel ||
+    ((formLabel: string) => (
+      <FormFieldLabel style={labelStyle}>{formLabel}</FormFieldLabel>
+    ));
 
-    const errorRenderer =
-      renderError ||
-      ((formError: string, index: number) => (
-        <FormFieldError key={index} style={errorStyle}>
-          {formError}
-        </FormFieldError>
-      ));
+  const errorRenderer =
+    renderError ||
+    ((formError: string, index: number) => (
+      <FormFieldError key={index} style={errorStyle}>
+        {formError}
+      </FormFieldError>
+    ));
 
-    return (
-      <View style={[styles.fieldContainer, containerStyle]}>
-        {label && labelRenderer(label)}
-        {children(field.getValue(), field.setValue, field.getErrors())}
-        {field.getErrors()?.map((error, index) => errorRenderer(error, index))}
-      </View>
-    );
-  }
-);
+  return (
+    <View style={[styles.fieldContainer, containerStyle]}>
+      {label && labelRenderer(label)}
+      {children(field.getValue(), field.setValue, field.getErrors())}
+      {field.getErrors()?.map((error, index) => errorRenderer(error, index))}
+    </View>
+  );
+};
 
 const FormFieldLabel = ({
   style,
