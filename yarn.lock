@@ -7199,7 +7199,7 @@ __metadata:
     eslint-config-prettier: ^9.0.0
     eslint-plugin-prettier: ^5.0.1
     jest: ^29.7.0
-    json-joy: ^1.18.1
+    json-joy: ^9.9.1
     lodash: ^4.17.21
     mobx: ^6.13.1
     mobx-react-lite: ^4.0.7
@@ -9975,9 +9975,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-joy@npm:^1.18.1":
-  version: 1.19.0
-  resolution: "json-joy@npm:1.19.0"
+"json-joy@npm:^9.9.1":
+  version: 9.9.1
+  resolution: "json-joy@npm:9.9.1"
   dependencies:
     arg: ^5.0.2
     hyperdyperid: ^1.2.0
@@ -9986,6 +9986,7 @@ __metadata:
     rxjs: 7
     tslib: 2
   bin:
+    jj: bin/jj.js
     json-pack: bin/json-pack.js
     json-pack-test: bin/json-pack-test.js
     json-patch: bin/json-patch.js
@@ -9993,7 +9994,7 @@ __metadata:
     json-pointer: bin/json-pointer.js
     json-pointer-test: bin/json-pointer-test.js
     json-unpack: bin/json-unpack.js
-  checksum: 6b06bfe79bd6f47bcd346544bf5022da99c3eec0d591dbddfbe6ad5f82ce63ae219f377a444e51b3b20c2bd092794a4992013012b9e2cf8dff016b09959a9456
+  checksum: d165398682f00019796225faf365cd8d060f3e086af39bb5081c30907b7e52eaf13697d1c0f6ee2b010fe255ae1fd776e05ad7d6ee5fb549e98fe982f560884b
   languageName: node
   linkType: hard
 
