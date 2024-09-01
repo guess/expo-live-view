@@ -6,12 +6,14 @@ const PhoenixSocketContext = createContext<PhoenixRepo | null>(null);
 interface PhoenixSocketProviderProps {
   url: string;
   params?: object;
+  connect?: boolean;
   children: React.ReactNode;
 }
 
 export const PhoenixSocketProvider: React.FC<PhoenixSocketProviderProps> = ({
   url,
   params,
+  connect = true,
   children,
 }) => {
   const phoenix = useMemo(() => {
@@ -19,12 +21,16 @@ export const PhoenixSocketProvider: React.FC<PhoenixSocketProviderProps> = ({
   }, [url, params]);
 
   useEffect(() => {
-    phoenix.connect();
+    if (connect) {
+      phoenix.connect();
+    }
 
     return () => {
-      phoenix.disconnect();
+      if (connect) {
+        phoenix.disconnect();
+      }
     };
-  }, [phoenix]);
+  }, [phoenix, connect]);
 
   return (
     <PhoenixSocketContext.Provider value={phoenix}>
