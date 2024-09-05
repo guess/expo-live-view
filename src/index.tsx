@@ -1,3 +1,5 @@
+export * from 'live-view-model';
+
 export * from './forms/Form';
 export * from './forms/FormField';
 export * from './forms/FormStore';
