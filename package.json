@@ -1,6 +1,6 @@
 {
   "name": "expo-live-view",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Phoenix LiveView for React Native",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
