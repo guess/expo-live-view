@@ -9,7 +9,7 @@ import {
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { observer } from 'mobx-react-lite';
 import { observable } from 'mobx';
-import { LiveViewModel, type PhoenixRepo } from 'live-view-model';
+import { LiveViewModel, type PhoenixConnection } from 'live-view-model';
 
 type UserForm = {
   name: string;
@@ -26,7 +26,7 @@ class UserFormViewModel extends LiveViewModel {
     errors: {},
   };
 
-  constructor(phoenix: PhoenixRepo, topic: string) {
+  constructor(phoenix: PhoenixConnection, topic: string) {
     super(phoenix, topic);
 
     this.makeObservable(this, {

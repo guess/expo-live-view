@@ -4,7 +4,7 @@ export {
   LiveChannel,
   LiveSocket,
   LiveViewModel,
-  PhoenixRepo,
+  PhoenixConnection,
 } from 'live-view-model';
 
 export * from './forms/Form';

@@ -5,14 +5,14 @@ import {
   useMemo,
   type ReactNode,
 } from 'react';
-import type { LiveViewModel, PhoenixRepo } from 'live-view-model';
+import type { LiveViewModel, PhoenixConnection } from 'live-view-model';
 import { usePhoenixSocket } from './PhoenixSocketProvider';
 
 export const LiveViewContext = createContext<LiveViewModel | null>(null);
 
 // LiveView component
 type LiveViewProps = {
-  factory: (phoenix: PhoenixRepo) => LiveViewModel;
+  factory: (phoenix: PhoenixConnection) => LiveViewModel;
   children: ReactNode;
 };
 
