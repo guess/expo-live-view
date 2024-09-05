@@ -7200,6 +7200,7 @@ __metadata:
     eslint-plugin-prettier: ^5.0.1
     jest: ^29.7.0
     json-joy: ^9.9.1
+    live-view-model: 0.1.5
     lodash: ^4.17.21
     mobx: ^6.13.1
     mobx-react-lite: ^4.0.7
@@ -10279,6 +10280,19 @@ __metadata:
   version: 1.2.4
   resolution: "lines-and-columns@npm:1.2.4"
   checksum: 0c37f9f7fa212b38912b7145e1cd16a5f3cd34d782441c3e6ca653485d326f58b3caccda66efce1c5812bde4961bbde3374fae4b0d11bf1226152337f3894aa5
+  languageName: node
+  linkType: hard
+
+"live-view-model@npm:0.1.5":
+  version: 0.1.5
+  resolution: "live-view-model@npm:0.1.5"
+  dependencies:
+    "@guess/phoenix-js": "git+https://github.com/guess/phoenix-js.git"
+    json-joy: ^9.9.1
+    lodash: ^4.17.21
+    mobx: ^6.13.1
+    rxjs: ^7.8.1
+  checksum: b361d6b0b1c3c7d86583b37b49c179cf21d6c5be2e377d1166bfaf6e28fdfbb0350f6141e78ddbcd36b3250ac6b036476c55f774c80b24fb29a293c1c4152903
   languageName: node
   linkType: hard
 

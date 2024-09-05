@@ -5,9 +5,8 @@ import {
   useMemo,
   type ReactNode,
 } from 'react';
-import type { LiveViewModel } from './LiveViewModel';
+import type { LiveViewModel, PhoenixRepo } from 'live-view-model';
 import { usePhoenixSocket } from './PhoenixSocketProvider';
-import type { PhoenixRepo } from './PhoenixRepo';
 
 export const LiveViewContext = createContext<LiveViewModel | null>(null);
 

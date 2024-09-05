@@ -7,10 +7,9 @@ import {
   TextFormField,
 } from 'expo-live-view';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { LiveViewModel } from 'expo-live-view';
 import { observer } from 'mobx-react-lite';
 import { observable } from 'mobx';
-import type { PhoenixRepo } from '../../src/phoenix/PhoenixRepo';
+import { LiveViewModel, type PhoenixRepo } from 'live-view-model';
 
 type UserForm = {
   name: string;

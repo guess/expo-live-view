@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
-import { PhoenixRepo } from './PhoenixRepo';
+import { PhoenixRepo } from 'live-view-model';
 
 const PhoenixSocketContext = createContext<PhoenixRepo | null>(null);
 

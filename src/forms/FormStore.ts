@@ -1,6 +1,6 @@
+import type { LiveViewModel } from 'live-view-model';
 import type { FormSpec, FormData, FormErrors } from './Form';
 import type { FormFieldSpec } from './FormField';
-import type { LiveViewModel } from '../phoenix/LiveViewModel';
 import { get } from 'lodash';
 
 export class FormStore<T extends FormData> {
