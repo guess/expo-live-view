@@ -1,4 +1,11 @@
-export * from 'live-view-model';
+export {
+  snakeToCamelCase,
+  snakeToTitleCase,
+  LiveChannel,
+  LiveSocket,
+  LiveViewModel,
+  PhoenixRepo,
+} from 'live-view-model';
 
 export * from './forms/Form';
 export * from './forms/FormField';
