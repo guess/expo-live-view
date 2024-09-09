@@ -8,8 +8,7 @@ import {
 } from 'expo-live-view';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { observer } from 'mobx-react-lite';
-import { observable } from 'mobx';
-import { LiveViewModel, type PhoenixConnection } from 'live-view-model';
+import { LiveConnection, liveObservable, liveViewModel } from 'live-view-model';
 
 type UserForm = {
   name: string;
@@ -19,21 +18,18 @@ type UserForm = {
   };
 };
 
-class UserFormViewModel extends LiveViewModel {
+@liveViewModel('/users/new')
+class UserFormViewModel {
+  constructor(_conn: LiveConnection) {}
+
+  @liveObservable('is_connected')
   isConnected: boolean = false;
+
+  @liveObservable.deep()
   form: FormSpec<UserForm> = {
     data: { name: '', address: { street: '', city: '' } },
     errors: {},
   };
-
-  constructor(phoenix: PhoenixConnection, topic: string) {
-    super(phoenix, topic);
-
-    this.makeObservable(this, {
-      form: observable.deep,
-      isConnected: observable,
-    });
-  }
 }
 
 export default function App() {
@@ -46,7 +42,7 @@ export default function App() {
 
 const UserFormLiveView = () => {
   return (
-    <LiveView factory={(phx) => new UserFormViewModel(phx, '/users/new')}>
+    <LiveView factory={(phx) => new UserFormViewModel(phx)}>
       <UserFormScreen />
     </LiveView>
   );

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
-import { PhoenixConnection } from 'live-view-model';
+import { LiveConnection, connect as phxConnect } from 'live-view-model';
 
-const PhoenixSocketContext = createContext<PhoenixConnection | null>(null);
+const PhoenixSocketContext = createContext<LiveConnection | null>(null);
 
 interface PhoenixSocketProviderProps {
   url: string;
@@ -17,7 +17,7 @@ export const PhoenixSocketProvider: React.FC<PhoenixSocketProviderProps> = ({
   children,
 }) => {
   const phoenix = useMemo(() => {
-    return new PhoenixConnection(url, params);
+    return phxConnect(url, params, false);
   }, [url, params]);
 
   useEffect(() => {
