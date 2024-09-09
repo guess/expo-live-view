@@ -37,10 +37,10 @@ export function LiveView({ factory, children }: LiveViewProps) {
   );
 }
 
-export const useLiveView = <T extends unknown>(): T => {
+export const useLiveView = <T extends unknown>(): T & LiveViewModel => {
   const context = useContext(LiveViewContext);
   if (context === null) {
     throw new Error('useLiveView must be used within a LiveView');
   }
-  return context as T;
+  return context as T & LiveViewModel;
 };
