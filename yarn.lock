@@ -7207,7 +7207,7 @@ __metadata:
     eslint-plugin-prettier: ^5.0.1
     jest: ^29.7.0
     json-joy: ^9.9.1
-    live-view-model: 0.2.1
+    live-view-model: 0.2.2
     lodash: ^4.17.21
     mobx: ^6.13.1
     mobx-react-lite: ^4.0.7
@@ -10318,18 +10318,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"live-view-model@npm:0.2.1":
-  version: 0.2.1
-  resolution: "live-view-model@npm:0.2.1"
+"live-view-model@npm:0.2.2":
+  version: 0.2.2
+  resolution: "live-view-model@npm:0.2.2"
   dependencies:
     "@guess/phoenix-js": "git+https://github.com/guess/phoenix-js.git"
     json-joy: 9.9.1
-    lodash: ^4.17.21
+    lodash-es: ^4.17.21
     mobx: ^6.13.1
     patch-package: ^8.0.0
     reflect-metadata: ^0.2.2
     rxjs: ^7.8.1
-  checksum: 115c9d39ccf5d2415f92f16c244ee61fc0b00eea9d785938ccdc503ef6db7fd91daa8f20eb64d502b8dea990bd61c81d4dc77e89303e01ce27d109207ef33600
+  checksum: a81d4be53f80abc0d24817d3e50190d73f8eea4abb56a761cf1933af5e97184358659ce2d447b7e6210b99cf87f15f080166bc59cb0d571f1f14863a39b376d0
   languageName: node
   linkType: hard
 
@@ -10380,6 +10380,13 @@ __metadata:
   dependencies:
     p-locate: ^5.0.0
   checksum: 72eb661788a0368c099a184c59d2fee760b3831c9c1c33955e8a19ae4a21b4116e53fa736dc086cdeb9fce9f7cc508f2f92d2d3aae516f133e16a2bb59a39f5a
+  languageName: node
+  linkType: hard
+
+"lodash-es@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash-es@npm:4.17.21"
+  checksum: 05cbffad6e2adbb331a4e16fbd826e7faee403a1a04873b82b42c0f22090f280839f85b95393f487c1303c8a3d2a010048bf06151a6cbe03eee4d388fb0a12d2
   languageName: node
   linkType: hard
 
