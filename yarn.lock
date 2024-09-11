@@ -7207,7 +7207,7 @@ __metadata:
     eslint-plugin-prettier: ^5.0.1
     jest: ^29.7.0
     json-joy: ^9.9.1
-    live-view-model: 0.2.3
+    live-view-model: 0.2.4
     lodash: ^4.17.21
     mobx: ^6.13.1
     mobx-react-lite: ^4.0.7
@@ -10318,9 +10318,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"live-view-model@npm:0.2.3":
-  version: 0.2.3
-  resolution: "live-view-model@npm:0.2.3"
+"live-view-model@npm:0.2.4":
+  version: 0.2.4
+  resolution: "live-view-model@npm:0.2.4"
   dependencies:
     "@guess/phoenix-js": "git+https://github.com/guess/phoenix-js.git"
     json-joy: 9.9.1
@@ -10329,7 +10329,7 @@ __metadata:
     patch-package: ^8.0.0
     reflect-metadata: ^0.2.2
     rxjs: ^7.8.1
-  checksum: 0f1f241b9f02f7f0123b9920d8bc8615ad5aa7a2a9a704a8722aadf5de395f0cfea93481b63bfbc6edffa7be7db26704554c8d4f57773db05f2b82e50f6e5799
+  checksum: ecb1e1a19cfba65695d0a2d2831ba93e6e57a8121d835bcb0dcb4fee07268bdbd0b50188af9332153556c1bf9b2111834d498e0f205a680cb0b7af90a565b02e
   languageName: node
   linkType: hard
 

@@ -1,6 +1,6 @@
 {
   "name": "expo-live-view",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Phoenix LiveView for React Native",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -188,7 +188,7 @@
   "dependencies": {
     "@guess/phoenix-js": "git+https://github.com/guess/phoenix-js.git",
     "json-joy": "^9.9.1",
-    "live-view-model": "0.2.3",
+    "live-view-model": "0.2.4",
     "lodash": "^4.17.21",
     "mobx": "^6.13.1",
     "mobx-react-lite": "^4.0.7",
