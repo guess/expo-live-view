@@ -7177,6 +7177,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@expo/metro-runtime": ~3.2.3
     expo: ~51.0.28
+    expo-live-view: "file:../"
     expo-status-bar: ~1.12.1
     react: 18.2.0
     react-dom: 18.2.0
@@ -7185,6 +7186,24 @@ __metadata:
     react-native-web: ~0.19.10
   languageName: unknown
   linkType: soft
+
+"expo-live-view@file:../::locator=expo-live-view-example%40workspace%3Aexample":
+  version: 0.4.4
+  resolution: "expo-live-view@file:../#../::hash=6b795b&locator=expo-live-view-example%40workspace%3Aexample"
+  dependencies:
+    "@guess/phoenix-js": "git+https://github.com/guess/phoenix-js.git"
+    json-joy: ^9.9.1
+    live-view-model: 0.2.4
+    lodash: ^4.17.21
+    mobx: ^6.13.1
+    mobx-react-lite: ^4.0.7
+    rxjs: ^7.8.1
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 85de092556118f30623b5e1425a7b1d1a3b87218e9a1d9a3ccca77cee4d46880dfb9414c6ca5e94fa61f3c3e29217bc4860778217b9072d38b0c6078faffac48
+  languageName: node
+  linkType: hard
 
 "expo-live-view@workspace:.":
   version: 0.0.0-use.local
