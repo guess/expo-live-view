@@ -1,8 +1,18 @@
-import { createContext, useEffect, useMemo, type ReactNode } from 'react';
+import {
+  createContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
 import { FormStore } from './FormStore';
 import { View } from 'react-native';
 import { useLiveView } from '../phoenix/LiveView';
-import { BehaviorSubject, debounceTime } from 'rxjs';
+import { BehaviorSubject, debounceTime, map } from 'rxjs';
+import {
+  LiveChannelStatus,
+  type LiveChannelConnectEvent,
+} from 'live-view-model';
 
 export type FormData = { [key: string]: any };
 export type FormErrors = { [key: string]: string[] | FormErrors };
@@ -23,6 +33,7 @@ type FormProps<T extends FormData> = {
   change: string;
   submit: string;
   debounce?: number;
+  autoRecover?: string;
   children: (form: FormStore<T>) => ReactNode;
 };
 
@@ -31,12 +42,15 @@ export function Form<T extends FormData>({
   as,
   change,
   submit,
-  debounce = 200,
+  debounce = 300,
+  autoRecover,
   children,
 }: FormProps<T>) {
   const vm = useLiveView();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const subject = useMemo(() => new BehaviorSubject<T>(form.data), []);
+  const [recoveryState, setRecoveryState] = useState<T | null>(null);
+
   const onChange = useMemo(() => {
     return (data: T) => {
       subject.next(data);
@@ -68,6 +82,31 @@ export function Form<T extends FormData>({
       subscription.unsubscribe();
     };
   }, [subject, debounce, vm, as, change]);
+
+  useEffect(() => {
+    const subscription = vm
+      .events$('lvm-connect')
+      .pipe(map((event) => event as LiveChannelConnectEvent))
+      .subscribe((event) => {
+        if (event.status === LiveChannelStatus.disconnected) {
+          setRecoveryState(formStore.data);
+        } else if (event.status === LiveChannelStatus.connected) {
+          if (
+            recoveryState &&
+            autoRecover !== null &&
+            autoRecover !== 'ignore'
+          ) {
+            const recoverEvent = autoRecover || change;
+            vm.pushEvent(recoverEvent, { [as]: recoveryState });
+            setRecoveryState(null);
+          }
+        }
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [vm, as, change, autoRecover, formStore, recoveryState, setRecoveryState]);
 
   return (
     <FormContext.Provider value={formStore}>

@@ -51,7 +51,8 @@ defmodule Demo.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
-      {:live_view_model, "~> 0.2"}
+      {:live_view_model, "~> 0.2"},
+      {:ecto, "~> 3.12.3"}
     ]
   end
 

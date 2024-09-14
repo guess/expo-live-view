@@ -1,19 +1,31 @@
 import { PhoenixSocketProvider } from 'expo-live-view';
 import { UserFormLiveView } from './UserForm';
 import { CounterLiveView } from './Counter';
+import { View } from 'react-native';
 
-const url = 'ws://localhost:4000/lvm';
-const type = 'counter';
+enum AppType {
+  counter = 'counter',
+  userForm = 'user',
+}
+
+const URL = 'ws://localhost:4000/lvm';
+const TYPE_TO_RUN: AppType = AppType.userForm;
 
 const App = () => {
-  let component;
-  if (type === 'counter') {
-    component = <CounterLiveView />;
-  } else {
-    component = <UserFormLiveView />;
-  }
+  const component = componentFromAppType(TYPE_TO_RUN);
 
-  return <PhoenixSocketProvider url={url}>{component}</PhoenixSocketProvider>;
+  return <PhoenixSocketProvider url={URL}>{component}</PhoenixSocketProvider>;
+};
+
+const componentFromAppType = (type: AppType) => {
+  switch (type) {
+    case AppType.counter:
+      return <CounterLiveView />;
+    case AppType.userForm:
+      return <UserFormLiveView />;
+    default:
+      return <View />;
+  }
 };
 
 export default App;
