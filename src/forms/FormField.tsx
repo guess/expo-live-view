@@ -63,19 +63,15 @@ export const FormField = ({
   return (
     <View style={[styles.fieldContainer, containerStyle]}>
       {label && (
-        <View style={[styles.labelContainer, labelContainerStyle]}>
-          {labelRenderer(formLabel)}
-        </View>
+        <View style={labelContainerStyle}>{labelRenderer(formLabel)}</View>
       )}
-      <View style={[styles.inputContainer, inputContainerStyle]}>
+      <View style={inputContainerStyle}>
         {children(field.getValue(), field.setValue, field.getErrors())}
       </View>
       {field
         .getErrors()
         ?.map((error, index) => (
-          <View style={[styles.errorContainer, errorContainerStyle]}>
-            {errorRenderer(error, index)}
-          </View>
+          <View style={errorContainerStyle}>{errorRenderer(error, index)}</View>
         ))}
     </View>
   );
@@ -115,14 +111,5 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 14,
     marginTop: 5,
-  },
-  labelContainer: {
-    zIndex: 0,
-  },
-  inputContainer: {
-    zIndex: 10,
-  },
-  errorContainer: {
-    zIndex: 0,
   },
 });
