@@ -8,7 +8,7 @@ export class FormStore<T extends FormData> {
   viewModel: LiveViewModel;
   formKey: string;
   name: string;
-  onChange: (params: T) => void;
+  onChange: (data: T) => void;
   change: string;
   submit: string;
 
@@ -17,7 +17,7 @@ export class FormStore<T extends FormData> {
     viewModel: LiveViewModel,
     formKey: string,
     name: string,
-    onChange: (params: T) => void,
+    onChange: (data: T) => void,
     change: string,
     submit: string
   ) {
@@ -43,13 +43,13 @@ export class FormStore<T extends FormData> {
   }
 
   setValue(path: string[], value: any) {
-    const fullPath = [this.formKey, 'params', ...path];
+    const fullPath = [this.formKey, 'data', ...path];
     const newValue = this.viewModel.setValueFromPath(fullPath, value);
-    newValue && this.onChange(newValue.params);
+    newValue && this.onChange(newValue.data);
   }
 
   getValue(path: string[]): any {
-    return get(this.params, path);
+    return get(this.data, path);
   }
 
   getErrors(path: string[]): string[] {
@@ -61,10 +61,6 @@ export class FormStore<T extends FormData> {
     return this.form.data;
   }
 
-  get params(): T {
-    return this.form.params;
-  }
-
   get errors(): FormErrors {
     return this.form.errors || {};
   }
@@ -73,17 +69,17 @@ export class FormStore<T extends FormData> {
     return Object.keys(this.errors).length === 0;
   }
 
-  validateForm(params: T) {
-    this.pushEvent(this.change, params);
+  validateForm(data: T) {
+    this.pushEvent(this.change, data);
   }
 
   submitForm() {
     if (!this.isValid) return;
-    this.pushEvent(this.submit, this.params);
+    this.pushEvent(this.submit, this.data);
   }
 
-  private pushEvent(event: string, params: T) {
-    this.viewModel.pushEvent(event, { [this.name]: params });
+  private pushEvent(event: string, data: T) {
+    this.viewModel.pushEvent(event, { [this.name]: data });
   }
 }
 
