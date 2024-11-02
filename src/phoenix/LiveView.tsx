@@ -20,17 +20,18 @@ export const LiveViewContext = createContext<LiveViewModel | null>(null);
 // LiveView component
 type LiveViewProps = {
   factory: (phoenix: LiveConnection) => LiveViewModel;
+  params?: object;
   children: ReactNode;
 };
 
-export function LiveView({ factory, children }: LiveViewProps) {
+export function LiveView({ factory, params = {}, children }: LiveViewProps) {
   const phoenix = usePhoenixSocket();
   const viewModel = useMemo(() => factory(phoenix), [phoenix, factory]);
 
   useEffect(() => {
-    join(viewModel);
+    join(viewModel, params);
     return () => leave(viewModel);
-  }, [viewModel]);
+  }, [viewModel, params]);
 
   return (
     <LiveViewContext.Provider value={viewModel as LiveViewModel}>

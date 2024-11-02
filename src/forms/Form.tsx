@@ -19,6 +19,7 @@ export type FormErrors = { [key: string]: string[] | FormErrors };
 export type ValidationRule = (value: any) => string | null;
 
 export type FormSpec<T extends FormData> = {
+  params: T;
   data: T;
   errors?: FormErrors;
 };

@@ -37,6 +37,7 @@ class UserFormViewModel {
   @liveObservable.deep()
   form: FormSpec<UserForm> = {
     data: { name: '', address: { street: '', city: '' } },
+    params: { name: '', address: { street: '', city: '' } },
     errors: {},
   };
 }
